@@ -2,7 +2,7 @@
 
 from tkinter import *
 import ttkbootstrap as tb
-from ttkbootstrap.widgets import Menubutton
+from ttkbootstrap.widgets import Menubutton # << 1. CORREGIDO: Es 'Menubutton' con 'b' minúscula
 from PIL import Image, ImageTk
 
 class MainView(tb.Frame):
@@ -25,12 +25,11 @@ class MainView(tb.Frame):
         self.header.grid(row=0, column=0, columnspan=2, sticky="ew")
 
         # Frame para alinear los elementos del usuario a la derecha del header
-        # 1. ELIMINADO: Eliminar el bootstyle "light" aquí.
-        #    Esto permite que el user_frame herede un fondo que permita la transparencia visual del icono.
-        user_frame = tb.Frame(self.header) 
+        user_frame = tb.Frame(self.header, bootstyle="light")
         user_frame.pack(side="right", padx=10, pady=5)
 
         # Creación del menú desplegable
+        # << 2. CORREGIDO: La instanciación también usa 'Menubutton'
         self.user_menubutton = Menubutton(user_frame, text="Usuario", bootstyle="light")
         self.user_menubutton.pack(side="right", padx=(5, 0))
 
@@ -47,15 +46,12 @@ class MainView(tb.Frame):
 
         # Carga y muestra del ícono de usuario
         try:
-            img = Image.open("imagenes/user_icon_transparente.png").resize((24, 24), Image.Resampling.LANCZOS)
+            img = Image.open("imagenes/user_icon.jpg").resize((24, 24), Image.Resampling.LANCZOS)
             self.user_icon = ImageTk.PhotoImage(img)
             
-            # 2. ELIMINADO: Eliminar el bootstyle "light" del icon_label.
-            #    Esto es CRÍTICO para que el Label no imponga un fondo blanco.
-            icon_label = tb.Label(user_frame, image=self.user_icon)
+            icon_label = tb.Label(user_frame, image=self.user_icon, bootstyle="light")
             icon_label.pack(side="right")
         except Exception as e:
-            # En caso de error, se usa un texto alternativo
             print(f"Error cargando user_icon.png: {e}")
             icon_label = tb.Label(user_frame, text="👤", bootstyle="primary", font=("", 14))
             icon_label.pack(side="right")
