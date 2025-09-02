@@ -49,7 +49,7 @@ class MainView(tb.Frame):
             img = Image.open("imagenes/user_icon.jpg").resize((24, 24), Image.Resampling.LANCZOS)
             self.user_icon = ImageTk.PhotoImage(img)
             
-            icon_label = tb.Label(user_frame, image=self.user_icon, bootstyle="light")
+            icon_label = tb.Label(user_frame, image=self.user_icon, bootstyle="light", borderwidth=0)
             icon_label.pack(side="right")
         except Exception as e:
             print(f"Error cargando user_icon.png: {e}")
