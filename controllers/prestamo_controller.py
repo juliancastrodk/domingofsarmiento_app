@@ -481,8 +481,8 @@ class PrestamoController:
             entry_libros.insert(0, ", ".join(libros_nombres))
             entry_libros.config(state="readonly")
             
-            # IMPORTANTE: Guardar los IDs en el diálogo principal
-            dialog.selected_libros_ids = [libro['id'] for libro in libros_seleccionados]
+            # ✅ Guardar los IDs en el diálogo principal (usando libros_ids)
+            dialog.libros_ids = [libro['id'] for libro in libros_seleccionados]
             
             win.destroy()
 
@@ -500,8 +500,8 @@ class PrestamoController:
         tree.bind('<Double-1>', lambda e: agregar_libro())
 
         # Si es edición, cargar libros ya seleccionados
-        if hasattr(dialog, 'selected_libros_ids') and dialog.selected_libros_ids:
-            for libro_id in dialog.selected_libros_ids:
+        if hasattr(dialog, 'libros_ids') and dialog.libros_ids:
+            for libro_id in dialog.libros_ids:
                 libro_info = self.libro_model.get_libro_by_id(libro_id)
                 if libro_info:
                     libros_seleccionados.append({
@@ -543,10 +543,8 @@ class PrestamoController:
                 dialog.destroy()
                 self.refresh_table()
             else:
-                # Mostrar el error específico que devuelve el modelo
                 messagebox.showerror("Error", resultado["error"])
         else:
-            # Para compatibilidad con el código anterior (si devuelve boolean)
             if resultado:
                 messagebox.showinfo("Éxito", "Préstamo registrado correctamente.")
                 dialog.destroy()
@@ -589,8 +587,8 @@ class PrestamoController:
     def _save_updated_prestamo(self, dialog, prestamo_id):
         try:
             # Obtener los nuevos libros seleccionados desde el atributo del diálogo
-            if hasattr(dialog, 'selected_libros_ids') and dialog.selected_libros_ids:
-                nuevos_libros = dialog.selected_libros_ids
+            if hasattr(dialog, 'libros_ids') and dialog.libros_ids:
+                nuevos_libros = dialog.libros_ids
             else:
                 messagebox.showwarning("Atención", "Debe seleccionar al menos un libro.")
                 return
